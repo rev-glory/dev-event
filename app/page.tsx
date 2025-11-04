@@ -3,12 +3,19 @@ import EventCard from "@/components/EventCard";
 import {IEvent} from "@/database/event.model";
 import {cacheLife} from "next/cache";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL =
+  process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}` // ✅ Production (Vercel)
+    : process.env.NEXT_PUBLIC_BASE_URL?.startsWith('http')
+    ? process.env.NEXT_PUBLIC_BASE_URL    // ✅ Custom defined with protocol
+    : 'http://localhost:3000';            // ✅ Local dev fallback
 
 const Page = async () => {
     'use cache';
     cacheLife('minutes')
-    const response = await fetch(`${BASE_URL}/api/events`);
+    const response = await fetch(`${BASE_URL}/api/events`, {
+      next: { revalidate: 60 },
+    });
     const { events } = await response.json();
 
     return (
