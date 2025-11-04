@@ -3,17 +3,12 @@ import ExploreBtn from '@/components/ExploreBtn';
 import { IEvent } from '@/database/event.model';
 import { cacheLife } from 'next/cache';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL?.startsWith('http')
-    ? process.env.NEXT_PUBLIC_BASE_URL
-    : 'http://localhost:3000';
-
 const Page = async () => {
   'use cache';
   cacheLife('minutes');
 
-  const response = await fetch(`${BASE_URL}/api/events`, {
-    next: { revalidate: 60 }, // optional: cache revalidation
+  const response = await fetch('/api/events', {
+    next: { revalidate: 60 },
   });
 
   if (!response.ok) {
