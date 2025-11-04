@@ -5,10 +5,11 @@ import {cacheLife} from "next/cache";
 
 const BASE_URL =
   process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}` // ✅ Production (Vercel)
+    ? `https://${process.env.VERCEL_URL}` // production (Vercel)
     : process.env.NEXT_PUBLIC_BASE_URL?.startsWith('http')
-    ? process.env.NEXT_PUBLIC_BASE_URL    // ✅ Custom defined with protocol
-    : 'http://localhost:3000';            // ✅ Local dev fallback
+    ? process.env.NEXT_PUBLIC_BASE_URL    // manual env (with protocol)
+    : 'http://localhost:3000';            // local fallback
+
 
 const Page = async () => {
     'use cache';
@@ -16,6 +17,7 @@ const Page = async () => {
     const response = await fetch(`${BASE_URL}/api/events`, {
       next: { revalidate: 60 },
     });
+
     const { events } = await response.json();
 
     return (
