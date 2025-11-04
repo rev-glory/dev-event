@@ -24,6 +24,7 @@ const Page = async () => {
           Featured Events
         </h3>
         <ul className='events list-none'>
+          {/* {events && events.length > 0 && events.map((event: Partial<IEvent>)=>( */}
           {events && events.length > 0 && events.map((event: IEvent)=>(
             <li key={event.title}>
               <EventCard {...event} />
