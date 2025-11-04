@@ -12,7 +12,6 @@ const Page = async () => {
   'use cache';
   cacheLife('minutes');
 
-  // ✅ Always use absolute URL when fetching during build/SSR
   const response = await fetch(`${BASE_URL}/api/events`, {
     next: { revalidate: 60 }, // optional: cache revalidation
   });
